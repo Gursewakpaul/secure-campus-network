@@ -1,0 +1,4 @@
+*.pka
+*.bak
+Thumbs.db
+.vscode/
