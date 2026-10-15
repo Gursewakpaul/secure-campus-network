@@ -3,6 +3,7 @@
 A segmented campus network built in Cisco Packet Tracer with an edge router doing NAT, a Layer 3 core switch doing inter-VLAN routing and DHCP, two access switches, and layered security: port security, DHCP snooping, Dynamic ARP Inspection (DAI) and inter-VLAN ACLs.
 
 ## Topology
+![Network topology](topology/Topology.png)
 
 ```
                  ISP (2911)  Lo0 8.8.8.8
