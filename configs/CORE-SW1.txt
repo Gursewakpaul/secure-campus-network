@@ -1,0 +1,194 @@
+Building configuration...
+
+Current configuration : 3663 bytes
+!
+version 12.2(37)SE1
+no service timestamps log datetime msec
+no service timestamps debug datetime msec
+service password-encryption
+!
+hostname CORE-SW1
+!
+!
+no profinet
+enable secret 5 $1$mERr$kIaRYKzyfo/t9/m6Qa5JA1
+!
+!
+ip dhcp excluded-address 192.168.10.1 192.168.10.10
+ip dhcp excluded-address 192.168.20.1 192.168.20.10
+ip dhcp excluded-address 192.168.30.1 192.168.30.10
+!
+ip dhcp pool VLAN10
+ network 192.168.10.0 255.255.255.0
+ default-router 192.168.10.1
+ dns-server 8.8.8.8
+ip dhcp pool VLAN20
+ network 192.168.20.0 255.255.255.0
+ default-router 192.168.20.1
+ dns-server 8.8.8.8
+ip dhcp pool VLAN30
+ network 192.168.30.0 255.255.255.0
+ default-router 192.168.30.1
+ dns-server 8.8.8.8
+!
+!
+ip routing
+!
+!
+!
+!
+username admin secret 5 $1$mERr$kIaRYKzyfo/t9/m6Qa5JA1
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+ip ssh version 2
+no ip domain-lookup
+ip domain-name lab.local
+!
+!
+spanning-tree mode pvst
+!
+!
+!
+!
+!
+!
+interface FastEthernet0/1
+!
+interface FastEthernet0/2
+!
+interface FastEthernet0/3
+!
+interface FastEthernet0/4
+!
+interface FastEthernet0/5
+!
+interface FastEthernet0/6
+!
+interface FastEthernet0/7
+!
+interface FastEthernet0/8
+!
+interface FastEthernet0/9
+!
+interface FastEthernet0/10
+!
+interface FastEthernet0/11
+!
+interface FastEthernet0/12
+!
+interface FastEthernet0/13
+!
+interface FastEthernet0/14
+!
+interface FastEthernet0/15
+!
+interface FastEthernet0/16
+!
+interface FastEthernet0/17
+!
+interface FastEthernet0/18
+!
+interface FastEthernet0/19
+!
+interface FastEthernet0/20
+!
+interface FastEthernet0/21
+!
+interface FastEthernet0/22
+!
+interface FastEthernet0/23
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+!
+interface FastEthernet0/24
+!
+interface GigabitEthernet0/1
+ no switchport
+ ip address 10.0.0.1 255.255.255.252
+ duplex auto
+ speed auto
+!
+interface GigabitEthernet0/2
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+!
+interface Vlan1
+ no ip address
+ shutdown
+!
+interface Vlan10
+ mac-address 0003.e49a.9601
+ ip address 192.168.10.1 255.255.255.0
+ ip access-group VLAN10-IN in
+!
+interface Vlan20
+ mac-address 0003.e49a.9602
+ ip address 192.168.20.1 255.255.255.0
+ ip access-group VLAN20-IN in
+!
+interface Vlan30
+ mac-address 0003.e49a.9603
+ ip address 192.168.30.1 255.255.255.0
+ ip access-group VLAN30-IN in
+!
+interface Vlan99
+ mac-address 0003.e49a.9604
+ ip address 192.168.99.1 255.255.255.0
+!
+ip classless
+ip route 0.0.0.0 0.0.0.0 10.0.0.2 
+!
+ip flow-export version 9
+!
+!
+ip access-list extended VLAN30-IN
+ permit udp any eq bootpc any eq bootps
+ deny ip 192.168.30.0 0.0.0.255 192.168.10.0 0.0.0.255
+ deny ip 192.168.30.0 0.0.0.255 192.168.20.0 0.0.0.255
+ deny ip 192.168.30.0 0.0.0.255 192.168.99.0 0.0.0.255
+ deny ip 192.168.30.0 0.0.0.255 10.0.0.0 0.0.0.3
+ permit ip any any
+ip access-list extended VLAN10-IN
+ permit udp any eq bootpc any eq bootps
+ permit ip host 192.168.10.12 192.168.99.0 0.0.0.255
+ deny ip 192.168.10.0 0.0.0.255 192.168.99.0 0.0.0.255
+ deny ip 192.168.10.0 0.0.0.255 192.168.30.0 0.0.0.255
+ permit tcp 192.168.10.0 0.0.0.255 192.168.20.0 0.0.0.255 eq www
+ permit tcp 192.168.10.0 0.0.0.255 192.168.20.0 0.0.0.255 eq 443
+ permit icmp 192.168.10.0 0.0.0.255 192.168.20.0 0.0.0.255 echo
+ deny ip 192.168.10.0 0.0.0.255 192.168.20.0 0.0.0.255
+ permit ip any any
+ip access-list extended VLAN20-IN
+ permit tcp 192.168.20.0 0.0.0.255 any established
+ permit icmp 192.168.20.0 0.0.0.255 any echo-reply
+ deny ip 192.168.20.0 0.0.0.255 192.168.10.0 0.0.0.255
+ deny ip 192.168.20.0 0.0.0.255 192.168.30.0 0.0.0.255
+ deny ip 192.168.20.0 0.0.0.255 192.168.99.0 0.0.0.255
+ permit ip any any
+!
+banner motd ^CAuthorized access only^C
+!
+!
+!
+!
+!
+line con 0
+!
+line aux 0
+!
+line vty 0 4
+ login local
+ transport input ssh
+!
+!
+!
+!
+end
